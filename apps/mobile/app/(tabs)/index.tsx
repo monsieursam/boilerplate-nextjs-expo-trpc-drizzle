@@ -1,16 +1,14 @@
 import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+import { Button, Platform, StyleSheet, TextInput } from 'react-native';
 
 import { HelloWave } from '@/components/HelloWave';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-import { api } from '@/trpc/client';
+import { useExample } from '@/hooks/useExample';
 
 export default function HomeScreen() {
-  const { data } = api.example.hello.useQuery({
-    text: 'from Client Component',
-  });
+  const { data, createMutation } = useExample()
 
   return (
     <ParallaxScrollView
@@ -22,7 +20,18 @@ export default function HomeScreen() {
         />
       }>
       <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome {data?.greeting}!</ThemedText>
+        {data?.map((item) => (
+          <ThemedText key={item.id} type="title">Welcome {item.first_name}!</ThemedText>
+        ))}
+        <Button
+          onPress={() => createMutation.mutate({
+            first_name: 'John',
+            last_name: 'Doe',
+            email: 'johndoe@example.com',
+          })}
+          title="Add User"
+        />
+
         <HelloWave />
       </ThemedView>
       <ThemedView style={styles.stepContainer}>
