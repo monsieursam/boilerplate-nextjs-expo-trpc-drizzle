@@ -1,4 +1,5 @@
 import { serverApi } from "@/trpc/server"
+import { revalidatePath } from "next/cache"
 
 const getUser = async () => {
   const data = await serverApi.example.get()
@@ -6,25 +7,24 @@ const getUser = async () => {
 }
 
 const createUser = async (
-  e: React.FormEvent<HTMLFormElement>
+  formData: FormData
 ) => {
-  e.preventDefault();
-  const formData = new FormData(e.currentTarget);
-  const data = await serverApi.example.add({
+  'use server'
+
+  await serverApi.example.add({
     first_name: formData.get('first_name') as string,
     last_name: formData.get('last_name') as string,
     email: formData.get('email') as string,
   })
-  return data
+
+  revalidatePath('/')
 }
 
 const AddUserComponent = () => {
-  'use client'
-
   return (
     <div>
       <form
-        onSubmit={createUser}
+        action={createUser}
       >
         <input
           type="text"

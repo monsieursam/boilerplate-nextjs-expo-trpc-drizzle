@@ -21,19 +21,37 @@ export function ClientComponent() {
         ))
       }
 
-      <div className="mt-4">
-        <button
-          onClick={() => {
-            createMutation.mutate({
-              first_name: 'John',
-              last_name: 'Doe',
-              email: 'johndoe@example.com',
-            });
-          }}
-          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
-        >
-          Calculate 5 + 3
-        </button>
+      <div>
+        <form onSubmit={async (e: React.FormEvent<HTMLFormElement>) => {
+          e.preventDefault();
+          const formData = new FormData(e.target as HTMLFormElement);
+          await createMutation.mutate({
+            first_name: formData.get('first_name') as string,
+            last_name: formData.get('last_name') as string,
+            email: formData.get('email') as string,
+          });
+        }}>
+          <input
+            type="text"
+            name="first_name"
+            placeholder="First Name"
+          />
+          <input
+            type="text"
+            name="last_name"
+            placeholder="Last Name"
+          />
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+          />
+          <button
+            type="submit"
+          >
+            Add User
+          </button>
+        </form>
       </div>
     </div>
   );
