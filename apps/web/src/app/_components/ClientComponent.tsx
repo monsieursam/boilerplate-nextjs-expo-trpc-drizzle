@@ -1,7 +1,6 @@
 'use client';
 
 import { useExample } from '@/hooks/useExample';
-import { clientApi } from '@/trpc/client';
 
 export function ClientComponent() {
   const { data, createMutation, isLoading } = useExample();
