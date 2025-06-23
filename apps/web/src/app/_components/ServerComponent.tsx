@@ -6,6 +6,7 @@ const getUser = async () => {
   return data
 }
 
+
 const createUser = async (
   formData: FormData
 ) => {
