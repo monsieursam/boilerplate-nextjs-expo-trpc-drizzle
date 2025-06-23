@@ -3,7 +3,13 @@
 import { useExample } from '@/hooks/useExample';
 
 export function ClientComponent() {
-  const { data, createMutation, isLoading } = useExample();
+  const { data, createMutation, deleteMutation, isLoading } = useExample();
+
+  const deleteUser = async (id: string) => {
+    await deleteMutation.mutate({
+      id,
+    });
+  }
 
   if (isLoading) return <div>Loading...</div>;
   if (!data) return <div>No data</div>;
@@ -17,6 +23,8 @@ export function ClientComponent() {
             <p>{item.first_name}</p>
             <p>{item.last_name}</p>
             <p>{item.email}</p>
+            <button onClick={() => deleteUser(item.id)}>Delete</button>
+
           </div>
         ))
       }

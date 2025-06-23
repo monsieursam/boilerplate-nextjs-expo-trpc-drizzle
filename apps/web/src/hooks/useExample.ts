@@ -10,8 +10,15 @@ export const useExample = () => {
     },
   });
 
+  const deleteMutation = clientApi.example.remove.useMutation({
+    onSuccess: () => {
+      utils.example.get.invalidate();
+    },
+  });
+
   return {
     createMutation,
+    deleteMutation,
     data,
     isLoading,
   }

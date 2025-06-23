@@ -20,6 +20,14 @@ const createUser = async (
   revalidatePath('/')
 }
 
+const deleteUser = async (id: string) => {
+  await serverApi.example.remove({
+    id,
+  })
+
+  revalidatePath('/')
+}
+
 const AddUserComponent = () => {
   return (
     <div>
@@ -51,6 +59,25 @@ const AddUserComponent = () => {
   )
 }
 
+const DeleteUserComponent = ({ id }: { id: string }) => {
+  return (
+    <div>
+      <form
+        action={async () => {
+          'use server'
+          await deleteUser(id)
+        }}
+      >
+        <button
+          type="submit"
+        >
+          Delete User
+        </button>
+      </form>
+    </div>
+  )
+}
+
 
 export const ServerComponent = async () => {
   const data = await getUser();
@@ -63,6 +90,7 @@ export const ServerComponent = async () => {
           <p>{item.first_name}</p>
           <p>{item.last_name}</p>
           <p>{item.email}</p>
+          <DeleteUserComponent id={item.id} />
         </div>
       ))
     }
