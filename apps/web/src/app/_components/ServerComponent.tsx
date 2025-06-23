@@ -2,9 +2,15 @@ import { serverApi } from "@/trpc/server"
 import { revalidatePath } from "next/cache"
 
 const getUser = async () => {
-  const data = await serverApi.example.get()
-  return data
+  try {
+    const data = await serverApi.example.get();
+    return data || [];
+  } catch (error) {
+    console.error('Failed to fetch users:', error);
+    return [];
+  }
 }
+
 
 
 const createUser = async (
