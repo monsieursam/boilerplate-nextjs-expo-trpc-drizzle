@@ -11,8 +11,6 @@ const getUser = async () => {
   }
 }
 
-
-
 const createUser = async (
   formData: FormData
 ) => {
